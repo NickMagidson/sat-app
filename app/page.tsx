@@ -1,42 +1,24 @@
-import { Card, CardContent } from "@/components/ui/card";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
 
-import { satellitePositionAndVelocity } from "@/components/tle";
+import SingleTleProcess from "@/components/single-tle-process";
+
+// 1. Paste TLE into the input box as 2 or 3 lines
+// 2. User hits the submit button
+// 3. Parse the TLE lines
+// 4. Use satellite.js to compute position and velocity
+// 5. Display the results below the input box
+
+
+// 1 25544U 98067A   25328.22215535  .00013951  00000-0  26056-3 0  9996
+// 2 25544  51.6316 234.1374 0003908 162.5046 197.6078 15.49037704539984
 
 
 export default function Home() {
 
-  console.log(satellitePositionAndVelocity);
-
-
   return (
     <>
-      <div className="app-container">
-        <div className="max-w-md mx-auto">
-          <Card>
-            {/* <CardHeader>
-              <CardTitle>Send Message</CardTitle>
-            </CardHeader> */}
-            <CardContent>
-              <div className="grid w-full gap-3">
-                <div className="flex items-center justify-between">
-                <Label htmlFor="message">TLE Input</Label>
-                <a href="#" className="text-blue-500 hover:underline text-xs">
-                  Random TLE
-                </a>
-                </div>
-                <Textarea placeholder="Paste TLE here..." id="message" />
-              </div>
-            </CardContent>
-          </Card>
-        </div>
+      <div className="app-container w-screen h-screen pt-8 space-y-4">
 
-
-        <div>
-          
-        </div>
-
+        <SingleTleProcess />
 
       </div>
     </>
