@@ -3,17 +3,36 @@
 import TLEInput from '@/components/tle-input';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import CesiumWrapper from './CesiumWrapper';
 
 interface SingleTleProcessProps {
   tleLines: string[] | null;
   setTleLines: (lines: string[] | null) => void;
 }
 
+async function getPosition() {
+  //Mimic server-side stuff...
+  return {
+    position: {
+      lat: 39.953436,
+      lng: -75.164356
+    }
+  }
+}
+
 
 export default function SingleTleProcess(FC: SingleTleProcessProps) {
   const [tleLines, setTleLines] = useState<string[] | null>(null);
   const [sgp4Result, setSgp4Result] = useState<any>(null);
+  const [fetchedPosition, setFetchedPosition] = useState<any>(null);
+
+  // Fetch position on component mount
+  useEffect(() => {
+    getPosition().then((position) => {
+      setFetchedPosition(position);
+    });
+  }, []);
 
   // console.log('From parent component - tleLines:', tleLines);
   // console.log('From parent component - sgp4Result:', sgp4Result.positionAndVelocity.meanElements);
@@ -29,6 +48,8 @@ export default function SingleTleProcess(FC: SingleTleProcessProps) {
         />
       </div>
 
+    <CesiumWrapper positions={fetchedPosition ? [fetchedPosition.position] : []} />
+    
       <div>
         {sgp4Result && (
           <div className=" mt-6 space-y-6">
