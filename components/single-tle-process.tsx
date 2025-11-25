@@ -1,6 +1,8 @@
 'use client';
 
-import TLEInput from "@/components/tle-input";
+import TLEInput from '@/components/tle-input';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { useState } from "react";
 
 interface SingleTleProcessProps {
@@ -13,6 +15,8 @@ export default function SingleTleProcess(FC: SingleTleProcessProps) {
   const [tleLines, setTleLines] = useState<string[] | null>(null);
   const [sgp4Result, setSgp4Result] = useState<any>(null);
 
+  // console.log('From parent component - tleLines:', tleLines);
+  // console.log('From parent component - sgp4Result:', sgp4Result.positionAndVelocity.meanElements);
 
   return (
     <>
@@ -23,25 +27,100 @@ export default function SingleTleProcess(FC: SingleTleProcessProps) {
           setSgp4Result={setSgp4Result} 
         />
       </div>
-    
 
       <div>
-          {tleLines && sgp4Result ? (
-            <>
-              <strong>Processed TLE Lines:</strong>
-              <br />
-              Line 1: {tleLines[0]}
-              <br />
-              Line 2: {tleLines[1]}
-              <br /><br />
-              <strong>SGP4 Result:</strong>
-              {/* <p>{JSON.stringify(sgp4Result)}</p> */}
-            </>
-          ) : (
-            'No TLE lines processed yet.'
-          )}
-      </div>
+        {sgp4Result && (
+          <div className="w-3/4 mx-auto mt-6 space-y-6">
+            {/* Position and Velocity */}
+            <Card>
+              <CardHeader>
+                <CardTitle>Position and Velocity</CardTitle>
+                <CardDescription>ECI coordinate frame</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Component</TableHead>
+                      <TableHead>Position (km)</TableHead>
+                      <TableHead>Velocity (km/s)</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    <TableRow>
+                      <TableCell className="font-medium">Latitude</TableCell>
+                      <TableCell className="font-mono text-sm">{sgp4Result.positionAndVelocity?.position?.x?.toFixed(3) || 'N/A'}</TableCell>
+                      <TableCell className="font-mono text-sm">{sgp4Result.positionAndVelocity?.velocity?.x?.toFixed(6) || 'N/A'}</TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell className="font-medium">Longitude</TableCell>
+                      <TableCell className="font-mono text-sm">{sgp4Result.positionAndVelocity?.position?.y?.toFixed(3) || 'N/A'}</TableCell>
+                      <TableCell className="font-mono text-sm">{sgp4Result.positionAndVelocity?.velocity?.y?.toFixed(6) || 'N/A'}</TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell className="font-medium">Altitude</TableCell>
+                      <TableCell className="font-mono text-sm">{sgp4Result.positionAndVelocity?.position?.z?.toFixed(3) || 'N/A'}</TableCell>
+                      <TableCell className="font-mono text-sm">{sgp4Result.positionAndVelocity?.velocity?.z?.toFixed(6) || 'N/A'}</TableCell>
+                    </TableRow>
+                  </TableBody>
+                </Table>
+              </CardContent>
+            </Card>
 
+            {/* Mean Elements */}
+            <Card>
+              <CardHeader>
+                <CardTitle>Satellite Orbit Elements</CardTitle>
+                <CardDescription>Mean elements as evolved at propagation date</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Element</TableHead>
+                      <TableHead>Symbol</TableHead>
+                      <TableHead>Value</TableHead>
+                    
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    <TableRow>
+                      <TableCell className="font-medium">Semi-major axis</TableCell>
+                      <TableCell className="font-mono text-sm">am</TableCell>
+                      <TableCell className="font-mono text-sm">{sgp4Result.positionAndVelocity?.meanElements?.am?.toFixed(6) || 'N/A'}</TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell className="font-medium">Eccentricity</TableCell>
+                      <TableCell className="font-mono text-sm">em</TableCell>
+                      <TableCell className="font-mono text-sm">{sgp4Result.positionAndVelocity?.meanElements?.em?.toFixed(6) || 'N/A'}</TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell className="font-medium">Inclination</TableCell>
+                      <TableCell className="font-mono text-sm">im</TableCell>
+                      <TableCell className="font-mono text-sm">{sgp4Result.positionAndVelocity?.meanElements?.im?.toFixed(6) || 'N/A'}</TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell className="font-medium">Right ascension of ascending node</TableCell>
+                      <TableCell className="font-mono text-sm">Om</TableCell>
+                      <TableCell className="font-mono text-sm">{sgp4Result.positionAndVelocity?.meanElements?.Om?.toFixed(6) || 'N/A'}</TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell className="font-medium">Argument of perigee</TableCell>
+                      <TableCell className="font-mono text-sm">om</TableCell>
+                      <TableCell className="font-mono text-sm">{sgp4Result.positionAndVelocity?.meanElements?.om?.toFixed(6) || 'N/A'}</TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell className="font-medium">Mean motion</TableCell>
+                      <TableCell className="font-mono text-sm">nm</TableCell>
+                      <TableCell className="font-mono text-sm">{sgp4Result.positionAndVelocity?.meanElements?.nm?.toFixed(6) || 'N/A'}</TableCell>
+                    </TableRow>
+                  </TableBody>
+                </Table>
+              </CardContent>
+            </Card>
+          </div>
+        )}
+      </div>
 
     </>
   )

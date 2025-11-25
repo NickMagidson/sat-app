@@ -1,4 +1,4 @@
-import { sgp4, twoline2satrec } from "satellite.js";
+import { json2satrec, sgp4, twoline2satrec } from "satellite.js";
 
 interface TleProps {
   line1: string;
@@ -6,11 +6,22 @@ interface TleProps {
 }
 
 
+
+
 function sgp4FromTle({ line1, line2 }: TleProps) {
   const satrec = twoline2satrec(line1, line2);
+  // console.log('satrec:', satrec);
   const positionAndVelocity = sgp4(satrec, 0); // tsince = 0 for current position
-  console.log('positionAndVelocity:', positionAndVelocity);
-  return positionAndVelocity; 
+  // console.log('positionAndVelocity:', positionAndVelocity);
+  return { positionAndVelocity, satrec };
 }
 
-export { sgp4FromTle };
+function sgp4FromOmm({ omm }: { omm: any }) {
+  // Placeholder for future implementation
+  const satrecFromOmm = json2satrec(omm);
+  // console.log('satrecFromOmm:', satrecFromOmm);
+  return satrecFromOmm;
+}
+
+export { sgp4FromOmm, sgp4FromTle };
+
