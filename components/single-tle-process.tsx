@@ -20,17 +20,18 @@ export default function SingleTleProcess(FC: SingleTleProcessProps) {
 
   return (
     <>
-      <div className="w-3/4 mx-auto">
-        <TLEInput 
-          // tleLines={tleLines} 
-          setTleLines={setTleLines} 
-          setSgp4Result={setSgp4Result} 
+    <div className="w-3/4 max-w-2xl mx-auto">
+      <div >
+        <TLEInput
+          // tleLines={tleLines}
+          setTleLines={setTleLines}
+          setSgp4Result={setSgp4Result}
         />
       </div>
 
       <div>
         {sgp4Result && (
-          <div className="w-3/4 mx-auto mt-6 space-y-6">
+          <div className=" mt-6 space-y-6">
             {/* Position and Velocity */}
             <Card>
               <CardHeader>
@@ -121,7 +122,7 @@ export default function SingleTleProcess(FC: SingleTleProcessProps) {
           </div>
         )}
       </div>
-
+    </div>
     </>
   )
   
